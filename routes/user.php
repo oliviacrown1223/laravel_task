@@ -1,0 +1,28 @@
+<?php
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\OrderController;
+
+
+
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+//Card
+Route::get('/cart/add/{product_id}/{value_id}', [CartController::class, 'add'])->name('cart.add');
+Route::get('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
+Route::get('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
+Route::get('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+//checkout User order
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::post('/checkout', [CheckoutController::class, 'place'])->name('checkout.place');
+
+
+Route::get('/order/{id}', [CartController::class, 'view'])->name('order.view');
+
+Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('user.orders');
+

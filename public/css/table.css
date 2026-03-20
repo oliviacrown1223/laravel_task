@@ -1,0 +1,11 @@
+table.table th,
+table.table td{
+    text-align: center;
+    vertical-align: middle;
+    border:1px solid #ddd;
+}
+
+table.table{
+    margin: auto;
+    border:2px solid #667eea;
+}
