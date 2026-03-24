@@ -1,6 +1,22 @@
 @extends('admin.panel')
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- ❌ All Errors --}}
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <link rel="stylesheet" href="{{ asset('css/table.css') }}">
 
     <!-- Add Brand Button -->

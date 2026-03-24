@@ -45,22 +45,36 @@
                      {{ $count }}
                      </span>
                   </a>
-                  <li class="nav-item ms-3 position-relative">
-                      <a href="{{ route('user.orders') }}" class="btn btn-light">
-                          <i class="bi bi-bag"></i> Orders
-                      </a>
+                     @if(session()->has('customer_id'))
 
-                      <span class="position-absolute top-0 start-100 translate-middle badge bg-danger">
-                    {{ $orderCount }}
-                     </span>
-                  </li>
+                         <li class="nav-item ms-3 position-relative">
+                             <a href="{{ route('user.orders') }}" class="btn btn-light">
+                                 <i class="bi bi-bag"></i> Orders
+                             </a>
+
+                             @if(isset($orderCount) && $orderCount > 0)
+                                 <span class="position-absolute top-0 start-100 translate-middle badge bg-danger">
+                {{ $orderCount }}
+            </span>
+                             @endif
+                         </li>
+
+                     @endif
               <!-- Login Button -->
               <li class="nav-item ms-3">
                   <a href="/login" class="btn btn-light px-4 rounded-pill">
                       Login
                   </a>
               </li>
+                     @if(session()->has('customer_id'))
 
+                         <li class="nav-item ms-3">
+                             <a href="{{ route('logout') }}" class="btn btn-danger px-3 rounded-pill">
+                                 Logout
+                             </a>
+                         </li>
+
+                     @endif
 
             </ul>
         </div>

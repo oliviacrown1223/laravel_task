@@ -20,8 +20,9 @@ class CheckUserLogin
 
         public function handle(Request $request, Closure $next): Response
     {
-        if (!Session::has('user_id')) {
-            return redirect()->route('user.login');
+        if (!session()->has('customer_id')) {
+            return redirect()->route('user.login')
+                ->with('error', 'Please login first');
         }
 
         return $next($request);

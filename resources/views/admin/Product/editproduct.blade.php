@@ -1,7 +1,13 @@
 @extends('admin.panel')
 
 @section('content')
-
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
+        </div>
+    @endif
     <h3>Edit Product</h3>
 
     <form action="{{ route('product.update',$data->id) }}" method="POST" enctype="multipart/form-data">

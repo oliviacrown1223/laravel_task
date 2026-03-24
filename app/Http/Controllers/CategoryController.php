@@ -16,23 +16,44 @@ class CategoryController extends Controller
         return view('admin.Category.Catagory', compact('category'));
     }
 
+    
+
     public function storecatagory(Request $request)
     {
+        // ✅ Validation
+        $request->validate([
+            'name'   => 'required|string|max:255|unique:categories,name',
+            'status' => 'nullable|boolean',
+            'image'  => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
+        ], [
+            'name.required'  => 'Please enter category name',
+            'name.unique'    => 'Category already exists',
+
+            'image.required' => 'Please upload category image',
+            'image.image'    => 'File must be an image',
+            'image.mimes'    => 'Only JPG, PNG, WEBP allowed',
+            'image.max'      => 'Image must be less than 2MB',
+        ]);
+
+        // ✅ Create Category
         $catagory = new Category();
         $catagory->name = $request->name;
-        /*$catagory->status = $request->status;*/
         $catagory->status = $request->status ? 1 : 0;
 
-        if($request->hasFile('image')){
+        // ✅ Image Upload
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
             $image->move(public_path('products'), $imageName);
+
             $catagory->image = $imageName;
         }
 
         $catagory->save();
 
-        return redirect()->route('catagory.catagoryindex');
+        return redirect()->route('catagory.catagoryindex')
+            ->with('success', 'Category Created Successfully');
     }
     function deletecatagory($id){
 

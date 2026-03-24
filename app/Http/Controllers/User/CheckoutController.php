@@ -12,6 +12,13 @@ class CheckoutController extends Controller
     public function index()
     {
        // return view('user.checkout');
+        // 🔒 Login check
+        if (!session()->has('customer_id')) {
+            return redirect()->route('user.login')
+                ->with('error', 'Please login first');
+        }
+
+        // 🛒 Cart check
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {

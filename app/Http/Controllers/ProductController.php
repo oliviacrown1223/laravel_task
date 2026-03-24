@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductVariant;
 
+use Illuminate\Support\Facades\Validator;
 
 
 class ProductController extends Controller
@@ -51,8 +52,8 @@ class ProductController extends Controller
 
     public function create()
     {
-        $brands = Brand::all();
-        $categories = Category::all();
+        $brands = \App\Models\Brand::where('status', 1)->get();
+        $categories =  \App\Models\Category::where('status', 1)->get();
         $variants = VariantsOption::with('values')->get();
 
         return view('admin.Product.add-product',compact('brands','categories','variants'),
@@ -61,27 +62,43 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-
-        // VALIDATION
         $request->validate([
-            'name' => 'required',
-            'price' => 'required',
-            'listed_price' => 'required',
-            'Description' => 'required',
-            'brands' => 'required',
-            'categories' => 'required',
-            'image' => 'required|image'
-        ],[
-            'name.required' => 'Please fill up Product Name',
-            'price.required' => 'Please fill up Price',
-            'listed_price.required' => 'Please fill up Listed Price',
-            'Description.required' => 'Please fill up Description',
-            'brands.required' => 'Please select Brand',
-            'categories.required' => 'Please select Category',
-            'image.required' => 'Please upload Product Image'
+            'name'         => 'required|string|max:255',
+            'price'        => 'required|numeric|min:1',
+            'listed_price' => 'required|numeric|min:1|gte:price',
+            'Description'  => 'required|string|max:1000',
+            'brands'       => 'required|exists:brands,id',
+            'categories'   => 'required|exists:categories,id',
+            'image'        => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
+        ], [
+            'name.required'         => 'Please enter product name',
+            'name.max'              => 'Product name too long',
+
+            'price.required'        => 'Please enter price',
+            'price.numeric'         => 'Price must be a number',
+            'price.min'             => 'Price must be greater than 0',
+
+            'listed_price.required' => 'Please enter listed price',
+            'listed_price.numeric'  => 'Listed price must be a number',
+            'listed_price.gte'      => 'Listed price must be greater than or equal to price',
+
+            'Description.required'  => 'Please enter description',
+
+            'brands.required'       => 'Please select brand',
+            'brands.exists'         => 'Selected brand is invalid',
+
+            'categories.required'   => 'Please select category',
+            'categories.exists'     => 'Selected category is invalid',
+
+            'image.required'        => 'Please upload product image',
+            'image.image'           => 'File must be an image',
+            'image.mimes'           => 'Only JPG, PNG, WEBP allowed',
+            'image.max'             => 'Image size must be less than 2MB',
         ]);
 
-
+        if ($request->fails()) {
+            return back()->withErrors($request)->withInput(); // ✅ HERE
+        }
 
         $product = new Product();
 
@@ -133,8 +150,44 @@ class ProductController extends Controller
 
     public function update(Request $req, $id)
     {
-        $product = Product::find($id);
+        $req->validate([
+            'name'         => 'required|string|max:255',
+            'price'        => 'required|numeric|min:1',
+            'listed_price' => 'required|numeric|min:1|gte:price',
+            'Description'  => 'required|string|max:1000',
+            'brands'       => 'required|exists:brands,id',
+            'categories'   => 'required|exists:categories,id',
+            'image'        => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
+        ], [
+            'name.required'         => 'Please enter product name',
+            'name.max'              => 'Product name too long',
 
+            'price.required'        => 'Please enter price',
+            'price.numeric'         => 'Price must be a number',
+            'price.min'             => 'Price must be greater than 0',
+
+            'listed_price.required' => 'Please enter listed price',
+            'listed_price.numeric'  => 'Listed price must be a number',
+            'listed_price.gte'      => 'Listed price must be greater than or equal to price',
+
+            'Description.required'  => 'Please enter description',
+
+            'brands.required'       => 'Please select brand',
+            'brands.exists'         => 'Selected brand is invalid',
+
+            'categories.required'   => 'Please select category',
+            'categories.exists'     => 'Selected category is invalid',
+
+            'image.required'        => 'Please upload product image',
+            'image.image'           => 'File must be an image',
+            'image.mimes'           => 'Only JPG, PNG, WEBP allowed',
+            'image.max'             => 'Image size must be less than 2MB',
+        ]);
+
+
+
+
+        $product = Product::find($id);
         $product->name = $req->name;
         $product->price = $req->price;
         $product->description = $req->Description;
@@ -176,23 +229,44 @@ class ProductController extends Controller
         return view('admin.Brands.brandsListing', compact('brands'));
     }
 
+
+
     public function storebrand(Request $request)
     {
+        // ✅ Validation
+        $request->validate([
+            'name'   => 'required|string|max:255|unique:brands,name',
+            'status' => 'nullable|boolean',
+            'image'  => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
+        ], [
+            'name.required'  => 'Please enter brand name',
+            'name.unique'    => 'Brand already exists',
+
+            'image.required' => 'Please upload brand image',
+            'image.image'    => 'File must be an image',
+            'image.mimes'    => 'Only JPG, PNG, WEBP allowed',
+            'image.max'      => 'Image must be less than 2MB',
+        ]);
+
+        // ✅ Create Brand
         $brand = new Brand();
-
         $brand->name = $request->name;
-        $brand->status = $request->status;
+        $brand->status = $request->status ? 1 : 0;
 
-        if($request->hasFile('image')){
+        // ✅ Image Upload
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
-            $image->move(public_path('uploads/products'), $imageName);
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+            $image->move(public_path('uploads/brands'), $imageName);
+
             $brand->image = $imageName;
         }
 
         $brand->save();
 
-        return redirect()->route('brand.brandindex');
+        return redirect()->route('brand.brandindex')
+            ->with('success', 'Brand Created Successfully');
     }
     function deletebrand($id){
 

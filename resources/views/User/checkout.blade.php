@@ -8,10 +8,12 @@
     <div class="container py-5">
 
         <div class="row">
+            <div style="padding: 3px; margin: 3px;align-items: center">
+                <span>Customer Name:</span>
 
+                {{$custemer->name}}
 
-
-
+            </div>
             <!-- LEFT: FORM -->
             <div class="col-lg-7">
 

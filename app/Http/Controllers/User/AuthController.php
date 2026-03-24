@@ -23,7 +23,7 @@ class AuthController extends Controllers
         // ✅ Validation (BEST PRACTICE)
         $request->validate([
             'name' => 'required|string|max:100',
-            'phone' => 'required|digits_between:10,15',
+            'phone' => 'required|digits:10',
             'email' => 'required|email|unique:customers,email',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -85,9 +85,17 @@ class AuthController extends Controllers
         return back()->with('error', 'Invalid Email or Password');
     }
     // Logout
+
+
     public function logout()
     {
-        Session::forget('user_id');
-        return redirect()->route('user.login'); // ✅ FIXED
+        // ✅ Remove all session data
+        Session::forget('customer_id');
+        Session::forget('customer');
+
+        // OR destroy full session
+        Session::flush();
+
+        return redirect('/')->with('success', 'Logout successful');
     }
 }

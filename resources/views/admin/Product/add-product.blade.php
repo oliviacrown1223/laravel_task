@@ -19,44 +19,40 @@
             <div class="col-md-6">
 
                 <label>Product Name</label>
-                <input type="text" name="name" class="form-control mb-3">
+                <input type="text" name="name" value="{{ old('name') }}" class="form-control mb-3">
 
                 <label>Price</label>
-                <input type="text" name="price" class="form-control mb-3">
+                <input type="text" name="price" value="{{ old('price') }}" class="form-control mb-3">
             </div>
             <div class="col-md-6">
 
                 <label>Listed Price</label>
-                <input type="text" name="listed_price" class="form-control mb-3">
+                <input type="text" name="listed_price" value="{{ old('listed_price') }}" class="form-control mb-3">
 
                 <label>Description</label>
-                <textarea name="Description" class="form-control mb-3"></textarea>
+                <textarea name="description" class="form-control">{{ old('description') }}</textarea>
 
 
 
                 <label>Brands</label>
-                <select name="brands" class="form-control mb-3">
-
+                <select name="brands" class="form-control">
                     <option value="">Select Brand</option>
-
                     @foreach($brands as $brand)
-                        <option value="{{ $brand->id}}">
+                        <option value="{{ $brand->id }}"
+                            {{ old('brands') == $brand->id ? 'selected' : '' }}>
                             {{ $brand->name }}
                         </option>
                     @endforeach
-
                 </select>
                 <label>Categories</label>
-                <select name="categories" class="form-control mb-3">
-
-                    <option value="">Select catagory</option>
-
+                <select name="categories" class="form-control">
+                    <option value="">Select Categories</option>
                     @foreach($categories as $cat)
-                        <option value="{{ $cat->id}}">
+                        <option value="{{ $cat->id }}"
+                            {{ old('categories') == $cat->id ? 'selected' : '' }}>
                             {{ $cat->name }}
                         </option>
                     @endforeach
-
                 </select>
             </div>
 
