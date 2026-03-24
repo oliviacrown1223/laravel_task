@@ -29,18 +29,16 @@
 
                <label>Brands</label>
                 <select name="brands" class="form-control mb-3">
-                    <option value="">{{$data->brands}}</option>
                     @foreach($brands as $brand)
-                        <option value="{{ $brand->name}}">
+                        <option value="{{ $brand->id}}">
                             {{ $brand->name }}
                         </option>
                     @endforeach
                 </select>
                 <label>categories</label>
                 <select name="categories" class="form-control mb-3">
-                    <option value="">{{$data->categories}}</option>
                     @foreach($categories as $cat)
-                        <option value="{{ $cat->name}}">
+                        <option value="{{ $cat->id}}">
                             {{ $cat->name }}
                         </option>
                     @endforeach
@@ -49,17 +47,18 @@
             </div>
 
             <div class="col-md-6 mt-3">
-
                 <label>Current Image</label><br>
-                <img src="/products/{{$data->image}}" width="150" class="mb-3">
 
+                <img id="previewImage"
+                     src="{{ asset('uploads/products/'.$data->image) }}"
+                     width="100"
+                     height="100"
+                     style="border-radius:8px; object-fit:cover; border:1px solid #ddd;">
             </div>
 
             <div class="col-md-6 mt-3">
-
                 <label>Change Image</label>
-                <input type="file" name="image" class="form-control">
-
+                <input type="file" name="image" id="imageInput" class="form-control" accept="image/*">
             </div>
 
             <div class="col-md-12 mt-4">
@@ -74,3 +73,21 @@
     </form>
 
 @endsection
+
+<script>
+    document.getElementById('imageInput').addEventListener('change', function(e) {
+
+        let file = e.target.files[0];
+
+        if (file) {
+            let reader = new FileReader();
+
+            reader.onload = function(event) {
+                document.getElementById('previewImage').src = event.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+    });
+</script>

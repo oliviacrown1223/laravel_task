@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductVariant;
-class CartController extends Controllers
+
+class CartController extends Controller
 {
     public function add($product_id, $value_id)
     {
-
-
 
         $product = Product::findOrFail($product_id);
 
@@ -19,7 +19,7 @@ class CartController extends Controllers
             ->where('value_id', $value_id)
             ->first();
 
-        if(!$variant || $variant->stock <= 0){
+        if (!$variant || $variant->stock <= 0) {
             return back()->with('error', 'Stock not available');
         }
 
@@ -29,11 +29,11 @@ class CartController extends Controllers
 
         $currentQty = isset($cart[$key]) ? $cart[$key]['qty'] : 0;
 
-        if($currentQty >= $variant->stock){
+        if ($currentQty >= $variant->stock) {
             return back()->with('error', 'Stock not available');
         }
 
-        if(isset($cart[$key])){
+        if (isset($cart[$key])) {
             $cart[$key]['qty']++;
         } else {
             $cart[$key] = [
@@ -43,7 +43,7 @@ class CartController extends Controllers
                 "price" => $product->price,
                 "image" => $product->image,
                 "qty" => 1,
-                "stock" => $variant->stock   // ✅ FIX HERE
+                "stock" => $variant->stock
             ];
         }
 
@@ -57,22 +57,12 @@ class CartController extends Controllers
         $cart = session()->get('cart', []);
         return view('User.cart', compact('cart'));
     }
-   /* public function increase($id)
-    {
-        $cart = session()->get('cart');
 
-        if(isset($cart[$id])){
-            $cart[$id]['qty']++;
-            session()->put('cart', $cart);
-        }
-
-        return back();
-    }*/
     public function increase($key)
     {
         $cart = session()->get('cart');
 
-        if(isset($cart[$key])){
+        if (isset($cart[$key])) {
 
             $product_id = $cart[$key]['product_id'];
             $value_id = $cart[$key]['value_id'];
@@ -80,8 +70,11 @@ class CartController extends Controllers
             $variant = ProductVariant::where('product_id', $product_id)
                 ->where('value_id', $value_id)
                 ->first();
+            if (!$variant) {
+                return back()->with('error', 'Variant not found');
+            }
 
-            if($cart[$key]['qty'] >= $variant->stock){
+            if ($cart[$key]['qty'] >= $variant->stock) {
                 return back()->with('error', 'Stock not available');
             }
 
@@ -96,8 +89,8 @@ class CartController extends Controllers
     {
         $cart = session()->get('cart');
 
-        if(isset($cart[$id])){
-            if($cart[$id]['qty'] > 1){
+        if (isset($cart[$id])) {
+            if ($cart[$id]['qty'] > 1) {
                 $cart[$id]['qty']--;
             } else {
                 unset($cart[$id]);
@@ -113,7 +106,7 @@ class CartController extends Controllers
     {
         $cart = session()->get('cart');
 
-        if(isset($cart[$id])){
+        if (isset($cart[$id])) {
             unset($cart[$id]);
             session()->put('cart', $cart);
         }

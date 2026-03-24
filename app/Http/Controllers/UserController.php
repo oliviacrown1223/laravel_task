@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+
+
+
 
 class UserController extends Controller
 {
-    function login(Request $req)
+    /*public function login(Request $req)
     {
-        $user = Admin::where('email',$req->email)
+        $user = Admin::where('email',$req->email )
             ->where('password',$req->password)
             ->first();
 
@@ -29,10 +35,34 @@ class UserController extends Controller
         {
             return back()->with('msg','Login failed');
         }
+
+    }*/
+    public function showLoginForm()
+    {
+        return view('login');
+    }
+    public function login(Request $req)
+    {
+        $user = Admin::where('email', $req->email)->first();
+
+        if ($user && $req->password == $user->password) {
+
+            if ($user->role == "admin") {
+
+                Session::put('admin_id', $user->id); // ✅ MUST MATCH
+            //    dd(Session::all());
+                return redirect('/dashboard');
+            }
+
+            return back()->with('msg', 'You are not admin');
+        }
+
+        return back()->with('msg', 'Invalid email or password');
     }
     public function logout()
     {
-        session()->forget('admin');   // remove admin session
-        return redirect('/login');
+      //  session()->forget('admin');
+        session()->forget('admin_id');// remove admin session
+        return redirect('/login-admin');
     }
 }

@@ -49,6 +49,10 @@
     <a href="{{ route('admin.orders') }}" class="{{ request()->routeIs('admin.orders*') ? 'active' : '' }}">
         <i class="bi bi-bag-check"></i> Orders
     </a>
+    <a href="{{ route('admin.customers') }}"
+       class="nav-link {{ request()->routeIs('admin.customers') ? 'active' : '' }}">
+        <i class="bi bi-people"></i> Customers
+    </a>
     <div class="menu-title">Appearance</div>
 
     <a href="javascript:void(0);" onclick="toggleThemeMenu()" class="d-flex justify-content-between align-items-center">
@@ -69,6 +73,8 @@
         </a>
 
     </div>
+
+
 
 </div>
 

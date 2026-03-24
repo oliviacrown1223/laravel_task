@@ -40,7 +40,7 @@
                     <option value="">Select Brand</option>
 
                     @foreach($brands as $brand)
-                        <option value="{{ $brand->name}}">
+                        <option value="{{ $brand->id}}">
                             {{ $brand->name }}
                         </option>
                     @endforeach
@@ -52,7 +52,7 @@
                     <option value="">Select catagory</option>
 
                     @foreach($categories as $cat)
-                        <option value="{{ $brand->name}}">
+                        <option value="{{ $categories->id}}">
                             {{ $cat->name }}
                         </option>
                     @endforeach

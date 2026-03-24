@@ -20,15 +20,14 @@ class OrderController extends Controller
     }
 
     // ✅ Update Status
-    public function status(Request $request, $id)
+    public function toggleStatus($id)
     {
         $order = Order::findOrFail($id);
 
-        $order->update([
-            'payment_status' => $request->status
-        ]);
+        $order->payment_status = $order->payment_status == 'pending' ? 'done' : 'pending';
+        $order->save();
 
-        return redirect('/admin/orders')->with('success','Category Updated Successfully');
+        return redirect()->back()->with('success', 'Status updated');
     }
     public function delete($id)
     {

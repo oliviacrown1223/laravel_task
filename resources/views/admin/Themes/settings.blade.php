@@ -20,7 +20,7 @@
 
             <!-- Show Logo -->
             @if(isset($setting->logo))
-                <img src="{{ asset('uploads/'.$setting->logo) }}" width="100">
+                <img src="{{ asset('uploads/products/'.$setting->logo) }}" width="100">
             @endif
 
             <!-- Theme Color -->

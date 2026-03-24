@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('User.layouts.app')
 
 @section('content')
 
@@ -23,7 +23,7 @@
 
                 @forelse($cart as $key => $item)
 
-                    @php
+                   @php
                         $subtotal = $item['price'] * $item['qty'];
                         $total += $subtotal;
                     @endphp
@@ -87,7 +87,7 @@
                             <!-- Price + Remove -->
                             <div class="col-md-2 text-end">
 
-                                <h6 class="fw-bold mb-2">₹ {{ $subtotal }}</h6>
+                                <h6 class="fw-bold mb-2">₹ {{ $item['price'] }}</h6>
 
                                 <a href="{{ route('cart.remove', $key) }}"
                                    class="text-danger small"
@@ -119,7 +119,7 @@
                 <div class="card shadow-sm border-0 p-4 rounded-4">
 
                     <h5 class="fw-bold mb-3">Order Summary</h5>
-
+df
                     <hr>
 
                     <p class="d-flex justify-content-between">
@@ -132,14 +132,15 @@
                         <span class="text-success">Free</span>
                     </p>
 
-                    <hr>
+                    <hr>ds
 
                     <h5 class="d-flex justify-content-between">
                         <span>Total</span>
                         <strong>₹ {{ $total }}</strong>
                     </h5>
 
-                    <a href="{{ route('checkout') }}" class="btn btn-warning w-100 mt-3 rounded-pill">
+                    <a href="{{ session()->has('user_id') ? route('checkout') : route('user.login') }}"
+                       class="btn btn-warning w-100 mt-3 rounded-pill">
                         Proceed to Checkout
                     </a>
 

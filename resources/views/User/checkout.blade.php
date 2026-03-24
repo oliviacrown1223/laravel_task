@@ -1,4 +1,5 @@
-@extends('layouts.app')
+
+@extends('User.layouts.app')
 
 @section('content')
 
@@ -13,28 +14,78 @@
 
                     <h4 class="mb-3">Checkout</h4>
 
+                    <!-- Display general error (like empty cart) -->
+                    @if(session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+
+                    <!-- Display success message -->
+                    @if(session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+
                     <form action="{{ route('checkout.place') }}" method="POST">
                         @csrf
 
+                        <!-- Name -->
                         <label>Name</label>
-                        <input type="text" name="name" class="form-control mb-3">
+                        <input type="text" name="name" class="form-control mb-2 @error('name') is-invalid @enderror"
+                               value="{{ old('name') }}">
+                        @error('name')
+                        <div class="text-danger mb-2">{{ $message }}</div>
+                        @enderror
 
+                        <!-- Phone -->
                         <label>Phone</label>
-                        <input type="text" name="phone" class="form-control mb-3">
 
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">+91</span>
+                            <input type="text"
+                                   name="phone"
+                                   class="form-control @error('phone') is-invalid @enderror"
+                                   value="{{ old('phone') }}"
+                                   maxlength="10"
+                                   placeholder="Enter 10 digit number">
+                        </div>
+
+                        @error('phone')
+                        <div class="text-danger mb-2">{{ $message }}</div>
+                        @enderror
+
+                        <!-- Address -->
                         <label>Address</label>
-                        <textarea name="address" class="form-control mb-3"></textarea>
-                        <label>Email</label>
-                        <input type="email" name="email" class="form-control mb-3">
+                        <textarea name="address" class="form-control mb-2 @error('address') is-invalid @enderror">{{ old('address') }}</textarea>
+                        @error('address')
+                        <div class="text-danger mb-2">{{ $message }}</div>
+                        @enderror
 
+                        <!-- Email -->
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control mb-2 @error('email') is-invalid @enderror"
+                               value="{{ old('email') }}">
+                        @error('email')
+                        <div class="text-danger mb-2">{{ $message }}</div>
+                        @enderror
+
+                        <!-- Pincode -->
                         <label>Pincode</label>
-                        <input type="text" name="pincode" class="form-control mb-3">
+                        <input type="text" name="pincode" class="form-control mb-2 @error('pincode') is-invalid @enderror"
+                               value="{{ old('pincode') }}">
+                        @error('pincode')
+                        <div class="text-danger mb-2">{{ $message }}</div>
+                        @enderror
 
                         <label>Payment Type</label>
-                        <select name="payment_type" class="form-control mb-3">
-                            <option value="offline">Cash on Delivery</option>
-                            <option value="online">Online Payment</option>
+                        <select name="payment_type" class="form-control mb-3 @error('payment_type') is-invalid @enderror">
+                            <option value="">-- Select Payment Type --</option>
+                            <option value="cod" {{ old('payment_type') == 'cod' ? 'selected' : '' }}>Cash on Delivery</option>
+                            <option value="online" {{ old('payment_type') == 'online' ? 'selected' : '' }}>Online Payment</option>
                         </select>
+
+                        @error('payment_type')
+                        <div class="text-danger mb-2">{{ $message }}</div>
+                        @enderror
+
                         <button class="btn btn-success w-100 rounded-pill">
                             Place Order
                         </button>

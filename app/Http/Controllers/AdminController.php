@@ -7,7 +7,7 @@ use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\ProductVariant;
-
+use App\Models\Customer;
 class AdminController extends Controller
 {
     public function adminPage()
@@ -26,8 +26,8 @@ class AdminController extends Controller
         $totalCategories = Category::count();
         $totalVariants = ProductVariant::count();
 
-        $lowStockProducts = ProductVariant::whereColumn('stock','<=','minStock')
-            ->with('product','value')
+        $lowStockProducts = ProductVariant::whereColumn('stock', '<=', 'minStock')
+            ->with('product', 'value')
             ->get();
 
         $recentProducts = Product::latest()->take(5)->get();
@@ -40,5 +40,14 @@ class AdminController extends Controller
             'lowStockProducts',
             'recentProducts'
         ));
+
+    }
+    public function customers()
+    {
+        // Get all customers from database
+        $customers = Customer::all();
+
+        // Pass to admin view
+        return view('admin.Customers.customers', compact('customers'));
     }
 }

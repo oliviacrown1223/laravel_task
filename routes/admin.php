@@ -14,12 +14,17 @@ use App\Http\Controllers\OrderController;
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
 
-Route::get('/admin',[AdminController::class, 'dashboard'])->middleware('adminauth')->name('dashboard');
+/*Route::get('/admin', [AdminController::class, 'dashboard'])
+    ->middleware('adminauth')
+    ->name('admin.home');*/
+Route::get('/admin', [AdminController::class, 'dashboard'])
+    ->middleware('adminauth')
+    ->name('admin.dashboard');
 
 Route::get('/admin/products',[ProductController::class,'index'])
-    ->middleware('adminauth')
     ->name('products.index');
-Route::get('/logout',[UserController::class,'logout'])->name('admin.logout');
+
+Route::get('/admin/logout', [UserController::class, 'logout'])->name('admin.logout');
 
 
 Route::get('/admin/product-add',[ProductController::class,'create'])->name('product.create');
@@ -77,6 +82,13 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/admin/orders/delete/{id}', [OrderController::class, 'delete'])->name('admin.orders.delete');
 
-    Route::post('/orders/status/{id}', [OrderController::class, 'status'])->name('admin.orders.status');
+    Route::post('/orders/status/{id}', [OrderController::class, 'toggleStatus'])->name('admin.orders.status');
 
 });
+
+
+Route::put('/admin/orders/status/{id}', [OrderController::class, 'toggleStatus'])
+    ->name('admin.orders.status');
+
+Route::get('/admin/customers', [App\Http\Controllers\AdminController::class, 'customers'])
+    ->name('admin.customers');

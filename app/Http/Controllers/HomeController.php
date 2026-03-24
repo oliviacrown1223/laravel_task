@@ -11,6 +11,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+
         $product = Product::all();
         $setting = Setting::first();
         $headerMenus = Menu::where('type','header')->get();

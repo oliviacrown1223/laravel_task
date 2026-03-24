@@ -48,8 +48,8 @@
                 </td>
                 <td>{{ number_format($p->listed_price,2) }}</td>
                 <td>{{ Str::limit($p->Description, 50) }}</td>
-                <td>{{ $p->brands }}</td>
-                <td>{{ $p->categories }}</td>
+                <td>{{ $p->brand->name ?? 'N/A' }}</td>
+                <td>{{ $p->category->name ?? 'N/A' }}</td>
                 <td>
                     <a href="/edit/{{ $p->id }}" class="btn btn-warning btn-sm me-1" style="border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
                         <i class="fa fa-edit"></i> Edit

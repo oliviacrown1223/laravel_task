@@ -43,6 +43,8 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
+
+
         return view('admin.Product.products',compact('products'));
     }
 
@@ -80,25 +82,7 @@ class ProductController extends Controller
         ]);
 
 
-     /*   $product = new Product;
 
-        $product->name = $request->name;
-        $product->price = $request->price;
-        $product->Description = $request->Description;
-        $product->listed_price = $request->listed_price;
-        $product->brands = $request->brands;
-        $product->categories = $request->categories;
-
-        if($request->hasFile('image')){
-            $image = $request->image;
-            $imageName = time().'.'.$image->getClientOriginalExtension();
-            $image->move(public_path('products'),$imageName);
-            $product->image = $imageName;
-        }
-
-        $product->save();
-
-        return redirect()->route('products.index');*/
         $product = new Product();
 
         $product->name = $request->name;
@@ -146,26 +130,36 @@ class ProductController extends Controller
         Product::destroy($id);
         return redirect()->route('products.index');
     }
-    public function update(Request $req,$id)
+
+    public function update(Request $req, $id)
     {
         $product = Product::find($id);
+
         $product->name = $req->name;
         $product->price = $req->price;
-        $product->Description = $req->Description;
-        $product->listed_price= $req->listed_price;
-        $product->brands= $req->brands;
-        $product->categories= $req->categories;
-        if($req->file('image'))
-        {
-            $file = $req->file('image');
-            $filename = time().".".$file->extension();
-            $file->move(public_path('products'),$filename);
+        $product->description = $req->Description;
+        $product->listed_price = $req->listed_price;
+        $product->brands = $req->brands;
+        $product->categories = $req->categories;
 
-            $product->image = $filename;
+        if ($req->hasFile('image')) {
+
+            if (!empty($product->image) && file_exists(public_path('uploads/products/'.$product->image))) {
+                unlink(public_path('uploads/products/'.$product->image));
+            }
+
+            $image = $req->file('image');
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('uploads/products'), $imageName);
+
+            // Save new image
+            $product->image = $imageName;
         }
+
         $product->save();
 
         return redirect()->route('products.index');
+
     }
     public function edit($id)
     {
@@ -175,9 +169,6 @@ class ProductController extends Controller
 
         return view('admin.Product.editproduct',compact('data','brands','categories'));
     }
-
-
-
 
     public function createbrand()
     {
@@ -195,7 +186,7 @@ class ProductController extends Controller
         if($request->hasFile('image')){
             $image = $request->file('image');
             $imageName = time().'.'.$image->getClientOriginalExtension();
-            $image->move(public_path('products'), $imageName);
+            $image->move(public_path('uploads/products'), $imageName);
             $brand->image = $imageName;
         }
 

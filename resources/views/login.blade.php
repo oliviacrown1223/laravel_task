@@ -11,6 +11,7 @@
 @endif
 
 --}}
+
     <!DOCTYPE html>
 
 <html>
@@ -70,10 +71,11 @@
 <div class="login-box">
 
     ```
-    <h3>Admin Login</h3>
+    <h3>Admin Login1</h3>
 
-    <form action="/login" method="post">
-        @csrf
+    <form method="POST" action="{{ route('admin.login.submit') }}">
+
+    @csrf
 
         <input type="text" name="email" class="form-control mb-3" placeholder="Enter Email" required>
 
