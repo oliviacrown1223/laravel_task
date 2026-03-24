@@ -74,7 +74,13 @@
 <!-- Main Content -->
 <div class="main">
     <div class="container py-5">
-
+        @if(session('cart_empty'))
+            <div class="position-fixed top-0 start-50 translate-middle-x mt-4" style="z-index: 9999;">
+                <div class="alert alert-warning shadow-lg rounded-4 px-4 py-3 text-center">
+                    🛒 Your cart is empty! Please add products first.
+                </div>
+            </div>
+        @endif
         <!-- Title -->
         <h2 class="mb-4 fw-bold text-dark">Our Products</h2>
 

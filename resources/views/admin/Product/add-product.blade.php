@@ -52,7 +52,7 @@
                     <option value="">Select catagory</option>
 
                     @foreach($categories as $cat)
-                        <option value="{{ $categories->id}}">
+                        <option value="{{ $cat->id}}">
                             {{ $cat->name }}
                         </option>
                     @endforeach

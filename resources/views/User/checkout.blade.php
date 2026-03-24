@@ -2,10 +2,15 @@
 @extends('User.layouts.app')
 
 @section('content')
-
+    @php
+    $custemer = \App\Models\Customer::first();
+    @endphp
     <div class="container py-5">
 
         <div class="row">
+
+
+
 
             <!-- LEFT: FORM -->
             <div class="col-lg-7">

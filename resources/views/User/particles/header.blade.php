@@ -3,6 +3,7 @@
     $cart = session('cart', []);
     $count = array_sum(array_column($cart, 'qty'));
     $orderCount = \App\Models\Order::count();
+
 @endphp
 <nav class="navbar navbar-expand-lg sticky-top"
      style="background: {{ $setting->theme_color ?? '#0d6efd' }}; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
@@ -26,7 +27,8 @@
 
                  @foreach(getHeaderMenus() as $menu)
                      <li class="nav-item">
-                         <a class="nav-link text-white" href="{{ url($menu->link) }}">
+                         <a class=" btn btn-light ms-3 position-relative" href="{{ url($menu->link) }}">
+
                              {{ $menu->name }}
                          </a>
                      </li>
@@ -58,6 +60,7 @@
                       Login
                   </a>
               </li>
+
 
             </ul>
         </div>

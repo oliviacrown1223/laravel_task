@@ -1,47 +1,112 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+@extends('User.layouts.app')
 
-<div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="card p-4 shadow rounded-4" style="width: 400px;">
+@section('content')
 
-        <h4 class="text-center mb-3">Login</h4>
+    <style>
+        body {
+            background: linear-gradient( #667eea);
+        }
+        .card {
+            border: none;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #764ba2;
+        }
+        .input-group-text {
+            background: #273eec;
+        }
+        .btn-custom {
+            background: #273eec;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background: #273eec;
+        }
+    </style>
 
-        {{-- ERROR MESSAGE --}}
-        @if(session('error'))
-            <div class="alert alert-danger text-center">
-                {{ session('error') }}
-            </div>
-        @endif
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-lg rounded-4 p-4" style="width: 420px;">
 
-        {{-- SUCCESS MESSAGE --}}
-        @if(session('success'))
-            <div class="alert alert-success text-center">
-                {{ session('success') }}
-            </div>
-        @endif
+            <!-- Title -->
+            <h3 class="text-center fw-bold mb-2">Welcome Back 👋</h3>
+            <p class="text-center text-muted mb-4">Login to your account</p>
 
-        <form method="POST" action="{{ route('user.login') }}">
-            @csrf
+            <!-- Success Message -->
+            @if(session('success'))
+                <div class="alert alert-success text-center">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-            <input type="email" name="email" placeholder="Email" class="form-control mb-3" required>
+            <!-- Error Message -->
+            @if(session('error'))
+                <div class="alert alert-danger text-center">
+                    {{ session('error') }}
+                </div>
+            @endif
 
-            <input type="password" name="password" placeholder="Password" class="form-control mb-3" required>
+            <!-- Validation Errors -->
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-            <button class="btn btn-primary w-100 rounded-pill">Login</button>
-        </form>
+            <!-- Form -->
+            <form method="POST" action="{{ route('user.login') }}">
+                @csrf
 
-        <p class="text-center mt-3">
-            Don't have account? <a href="{{ route('register') }}">Register</a>
-        </p>
+                <!-- Email -->
+                <div class="mb-3">
+                    <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-envelope"></i>
+                    </span>
+                        <input type="email" name="email" class="form-control"
+                               placeholder="Email Address" value="{{ old('email') }}" required>
+                    </div>
+                </div>
 
+                <!-- Password -->
+                <div class="mb-2">
+                    <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                        <input type="password" name="password" class="form-control"
+                               placeholder="Password" required>
+                    </div>
+                </div>
+
+                <!-- Extra Options -->
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <input type="checkbox" name="remember"> Remember me
+                    </div>
+                    <a href="#" class="text-decoration-none">Forgot?</a>
+                </div>
+
+                <!-- Button -->
+                <button type="submit" class="btn btn-custom w-100 py-2 rounded-3 fw-bold">
+                    Login
+                </button>
+
+            </form>
+
+            <!-- Footer -->
+            <p class="text-center mt-3 mb-0">
+                Don’t have an account?
+                <a href="{{ route('register') }}" class="fw-bold text-decoration-none">
+                    Register
+                </a>
+            </p>
+
+        </div>
     </div>
-</div>
 
-</body>
-</html>
-
+@endsection

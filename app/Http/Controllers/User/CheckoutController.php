@@ -11,14 +11,14 @@ class CheckoutController extends Controller
 {
     public function index()
     {
-        return view('user.checkout');
-      /*  $cart = session()->get('cart', []);
+       // return view('user.checkout');
+        $cart = session()->get('cart', []);
 
-        if(empty($cart)){
-            return redirect('/')->with('error', 'Cart is empty');
+        if (empty($cart)) {
+            return redirect('/')->with('cart_empty', true);
         }
 
-        return view('User.checkout', compact('cart'));*/
+        return view('User.checkout', compact('cart'));
     }
 
     public function place(Request $request)

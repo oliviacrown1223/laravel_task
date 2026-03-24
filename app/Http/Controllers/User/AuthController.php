@@ -18,31 +18,22 @@ class AuthController extends Controllers
         return view('User.auth.register');
     }
 
-    // Register Save
     public function register(Request $request)
     {
-        // Simple manual validation
-        if (
-            empty($request->name) ||
-            empty($request->phone) ||
-            empty($request->email) ||
-            empty($request->password)
-        ) {
-            return back()->with('error', 'All fields are required')->withInput();
-        }
+        // ✅ Validation (BEST PRACTICE)
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'phone' => 'required|digits_between:10,15',
+            'email' => 'required|email|unique:customers,email',
+            'password' => 'required|min:6|confirmed',
+        ]);
 
-        // Check email already exists
-        $check = \App\Models\Customer::where('email', $request->email)->first();
-        if ($check) {
-            return back()->with('error', 'Email already exists')->withInput();
-        }
-
-        // Insert data
-        \App\Models\Customer::create([
+        // ✅ Create User
+        Customer::create([
             'name' => $request->name,
             'phone' => $request->phone,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password), // ✅ FIXED
         ]);
 
         return redirect()->route('user.login')->with('success', 'Register successful');
@@ -55,7 +46,7 @@ class AuthController extends Controllers
     }
 
     // Login Check
-    public function login(Request $request)
+  /*  public function login(Request $request)
     {
         $user = Customer::where('email', $request->email)->first();
 
@@ -67,8 +58,32 @@ class AuthController extends Controllers
         }
 
         return back()->with('error', 'Invalid Email or Password');
-    }
+    }*/
 
+    public function login(Request $request)
+    {
+        // ✅ Validation
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // ✅ Find user
+        $user = Customer::where('email', $request->email)->first();
+
+        // ✅ Check password with HASH (IMPORTANT)
+        if ($user && Hash::check($request->password, $user->password)) {
+
+            // ✅ Store session
+            Session::put('customer_id', $user->id);
+            Session::put('customer', $user); // optional (for name display)
+
+            return redirect('/checkout')->with('success', 'Login successful');
+        }
+
+        // ❌ Failed
+        return back()->with('error', 'Invalid Email or Password');
+    }
     // Logout
     public function logout()
     {
