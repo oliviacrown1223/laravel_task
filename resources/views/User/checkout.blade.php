@@ -37,12 +37,12 @@
                         @error('name')
                         <div class="text-danger mb-2">{{ $message }}</div>
                         @enderror
-                        <lable>costomers_id</lable>
+                       {{-- <lable>costomers_id</lable>
                         <input type="text" name="costomers_id" class="form-control mb-2 @error('costomers_id') is-invalid @enderror"
                                value="{{session()->get('customer_id')}}" readonly>
                         @error('costomers_id')
                         <div class="text-danger mb-2">{{ $message }}</div>
-                        @enderror
+                        @enderror--}}
                         <!-- Phone -->
                         <label>Phone</label>
 
@@ -77,7 +77,7 @@
 
                         <!-- Pincode -->
                         <label>Pincode</label>
-                        <input type="text" name="pincode" class="form-control mb-2 @error('pincode') is-invalid @enderror"
+                        <input type="number" name="pincode" class="form-control mb-2 @error('pincode') is-invalid @enderror"
                                value="{{ old('pincode') }}">
                         @error('pincode')
                         <div class="text-danger mb-2">{{ $message }}</div>

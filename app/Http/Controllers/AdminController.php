@@ -45,9 +45,8 @@ class AdminController extends Controller
     public function customers()
     {
         // Get all customers from database
-        $customers = Customer::all();
+        $customers = \App\Models\Customer::withCount('orders')->get();
 
-        // Pass to admin view
         return view('admin.Customers.customers', compact('customers'));
     }
 }

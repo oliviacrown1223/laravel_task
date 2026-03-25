@@ -10,7 +10,7 @@
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Email</th>
-                <th>Password</th>
+                <th>Total Order</th>
             </tr>
             </thead>
             <tbody>
@@ -20,7 +20,9 @@
                     <td>{{ $customer->name }}</td>
                     <td>{{ $customer->phone }}</td>
                     <td>{{ $customer->email }}</td>
-                    <td>{{ $customer->password }}</td>
+                 {{--   <td>{{ $customer->total_orders }}</td>--}}
+                     <td>{{ $customer->orders_count}}</td>
+
                 </tr>
             @empty
                 <tr>

@@ -17,11 +17,11 @@
 <body>
 
 <!-- Sidebar -->
-<div class="sidebar">
+<div class="sidebar" style="max-height:100%; overflow-y: auto;">
 
 
     <div class="logo-box">
-        <img src="{{ asset('uploads/products/'.(\App\Models\Setting::first()->logo ?? 'default.png')) }}" class="logo-img" height="50">
+        <img src="{{ asset('uploads/products/'.(\App\Models\Setting::first()->logo ?? 'default.png')) }}" class="logo-img" height="60">
     </div>
     <h4>Admin Panel</h4>
 

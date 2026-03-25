@@ -59,7 +59,12 @@ class CheckoutController extends Controller
             'payment_type'   => $validated['payment_type'],
             'payment_status' => 'pending'
         ]);
+        $customer_id = session()->get('customer_id');
 
+        if ($customer_id) {
+            \App\Models\Customer::where('id', $customer_id)
+                ->increment('total_orders');
+        }
         $total = 0;
 
         // ✅ Save Order Items

@@ -90,7 +90,7 @@
             <div class="mb-3">
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                    <input type="text" name="phone" class="form-control"
+                    <input type="number" name="phone" class="form-control"
                            placeholder="Phone Number" value="{{ old('phone') }}">
                 </div>
             </div>
