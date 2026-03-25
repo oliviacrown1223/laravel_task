@@ -3,17 +3,13 @@
 
 @section('content')
     @php
-    $custemer = \App\Models\Customer::first();
+        // Get the logged-in customer
+        $customer = session()->get('customer');
     @endphp
     <div class="container py-5">
 
         <div class="row">
-            <div style="padding: 3px; margin: 3px;align-items: center">
-                <span>Customer Name:</span>
 
-                {{$custemer->name}}
-
-            </div>
             <!-- LEFT: FORM -->
             <div class="col-lg-7">
 
@@ -37,11 +33,16 @@
                         <!-- Name -->
                         <label>Name</label>
                         <input type="text" name="name" class="form-control mb-2 @error('name') is-invalid @enderror"
-                               value="{{ old('name') }}">
+                               value="{{ old('name', $customer->name ?? '') }}" readonly>
                         @error('name')
                         <div class="text-danger mb-2">{{ $message }}</div>
                         @enderror
-
+                        <lable>costomers_id</lable>
+                        <input type="text" name="costomers_id" class="form-control mb-2 @error('costomers_id') is-invalid @enderror"
+                               value="{{session()->get('customer_id')}}" readonly>
+                        @error('costomers_id')
+                        <div class="text-danger mb-2">{{ $message }}</div>
+                        @enderror
                         <!-- Phone -->
                         <label>Phone</label>
 
@@ -50,7 +51,7 @@
                             <input type="text"
                                    name="phone"
                                    class="form-control @error('phone') is-invalid @enderror"
-                                   value="{{ old('phone') }}"
+                                   value="{{ old('phone', $customer->phone ?? '') }}" readonly
                                    maxlength="10"
                                    placeholder="Enter 10 digit number">
                         </div>
@@ -69,7 +70,7 @@
                         <!-- Email -->
                         <label>Email</label>
                         <input type="email" name="email" class="form-control mb-2 @error('email') is-invalid @enderror"
-                               value="{{ old('email') }}">
+                               value="{{ old('email', $customer->email ?? '') }}" readonly>
                         @error('email')
                         <div class="text-danger mb-2">{{ $message }}</div>
                         @enderror

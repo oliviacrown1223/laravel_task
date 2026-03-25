@@ -2,7 +2,9 @@
     $setting = \App\Models\Setting::first();
     $cart = session('cart', []);
     $count = array_sum(array_column($cart, 'qty'));
-    $orderCount = \App\Models\Order::count();
+//$orderCount = \App\Models\Order::count();
+
+     $customer = \App\Models\Customer::find(session('customer_id'));
 
 @endphp
 <nav class="navbar navbar-expand-lg sticky-top"
@@ -54,26 +56,32 @@
 
                              @if(isset($orderCount) && $orderCount > 0)
                                  <span class="position-absolute top-0 start-100 translate-middle badge bg-danger">
-                {{ $orderCount }}
-            </span>
+            {{ $orderCount }}
+        </span>
                              @endif
                          </li>
 
                      @endif
-              <!-- Login Button -->
-              <li class="nav-item ms-3">
-                  <a href="/login" class="btn btn-light px-4 rounded-pill">
-                      Login
-                  </a>
-              </li>
-                     @if(session()->has('customer_id'))
+
+
+
+                     @if($customer)
+                         {{-- ✅ Show user name + logout --}}
+
 
                          <li class="nav-item ms-3">
-                             <a href="{{ route('logout') }}" class="btn btn-danger px-3 rounded-pill">
+                             <a href="{{ route('logout') }}" class="btn btn-danger">
                                  Logout
                              </a>
                          </li>
 
+                     @else
+                         {{-- ❌ Show login only if NOT logged in --}}
+                         <li class="nav-item ms-3">
+                             <a href="{{ route('user.login') }}" class="btn btn-light px-4 rounded-pill">
+                                 Login
+                             </a>
+                         </li>
                      @endif
 
             </ul>

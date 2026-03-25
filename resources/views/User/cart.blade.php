@@ -119,7 +119,7 @@
                 <div class="card shadow-sm border-0 p-4 rounded-4">
 
                     <h5 class="fw-bold mb-3">Order Summary</h5>
-df
+
                     <hr>
 
                     <p class="d-flex justify-content-between">
@@ -139,7 +139,7 @@ df
                         <strong>₹ {{ $total }}</strong>
                     </h5>
 
-                    <a href="{{ session()->has('user_id') ? route('checkout') : route('user.login') }}"
+                    <a href="{{ session()->has('customer_id') ? route('checkout') : route('user.login') }}"
                        class="btn btn-warning w-100 mt-3 rounded-pill">
                         Proceed to Checkout
                     </a>

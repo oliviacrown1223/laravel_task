@@ -74,7 +74,15 @@
 
     </div>
 
+    <!-- Logout Button -->
+    <a href="javascript:void(0);" id="logoutBtn" class="nav-link">
+        <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
 
+    <!-- Hidden Logout Form -->
+    <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
 
 </div>
 
@@ -110,21 +118,22 @@
 <!-- SweetAlert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<!-- SweetAlert2 Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.getElementById("logoutBtn").addEventListener("click", function(){
-
+    document.getElementById("logoutBtn").addEventListener("click", function() {
         Swal.fire({
             title: 'Logout?',
             text: "Are you sure you want to logout?",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, Logout'
+            confirmButtonText: 'Yes, Logout',
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "{{ route('admin.logout') }}";
+                document.getElementById('logoutForm').submit();
             }
         });
-
     });
 </script>
 

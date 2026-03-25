@@ -16,7 +16,7 @@
 
         <!-- CUSTOMER -->
         <div class="card p-4 mb-4 shadow-sm">
-            <h5>Customer Details</h5>KJ
+            <h5>Customer Details</h5>
 
             <p><strong>Name:</strong> {{ $order->customer_name }}</p>
             <p><strong>Phone:</strong> {{ $order->phone_no }}</p>

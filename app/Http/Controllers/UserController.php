@@ -43,13 +43,13 @@ class UserController extends Controller
     }
     public function login(Request $req)
     {
-        $user = Admin::where('email', $req->email)->first();
+        $admin = Admin::where('email', $req->email)->first();
 
-        if ($user && $req->password == $user->password) {
+        if  ($admin && Hash::check($req->password, $admin->password)) {
 
-            if ($user->role == "admin") {
+            if ($admin->role == "admin") {
 
-                Session::put('admin_id', $user->id); // ✅ MUST MATCH
+                Session::put('admin_id', $admin->id); // ✅ MUST MATCH
             //    dd(Session::all());
                 return redirect('/dashboard');
             }

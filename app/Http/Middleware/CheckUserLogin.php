@@ -21,7 +21,7 @@ class CheckUserLogin
         public function handle(Request $request, Closure $next): Response
     {
         if (!session()->has('customer_id')) {
-            return redirect()->route('user.login')
+            return redirect('/checkout')
                 ->with('error', 'Please login first');
         }
 

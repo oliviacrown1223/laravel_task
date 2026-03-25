@@ -50,6 +50,7 @@ class CheckoutController extends Controller
         $order = Order::create([
             'order_id'       => 'OD_' . strtoupper(uniqid()),
             'customer_name'  => $validated['name'],
+            'customer_id'    => session()->get('customer_id'),
             'email'          => $validated['email'],
             'phone_no'       => $validated['phone'],
             'address'        => $validated['address'],

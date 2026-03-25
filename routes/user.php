@@ -21,7 +21,10 @@ Route::get('/cart/remove/{key}', [CartController::class, 'remove'])->name('cart.
 
 Route::get('/order/{id}', [CartController::class, 'view'])->name('order.view');
 
-Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('user.orders');
+//Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('user.orders');
+Route::get('/my-orders', [\App\Http\Controllers\User\OrderController::class, 'index'])
+    ->name('user.orders')
+    ->middleware('userlogin'); // ensure user must be logged in
 
 // Register
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');

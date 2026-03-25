@@ -12,7 +12,7 @@ class CreateOrdersTable extends Migration
 
             $table->id();
             $table->string('order_id')->unique();
-
+            $table->unsignedBigInteger('customer_id');
             $table->string('customer_name');
             $table->string('email')->nullable();
             $table->string('phone_no');

@@ -35,6 +35,7 @@
                         <thead class="table-dark">
                         <tr>
                             <th>#ID</th>
+                            <th>Customer ID</th>
                             <th>Customer</th>
                             <th>Phone</th>
                             <th>Total</th>
@@ -48,6 +49,7 @@
                             <tr>
 
                                 <td>{{ $order->order_id }}</td>
+                                <td>{{ $order->customer_id }}</td>
                                 <td>{{ $order->customer_name }}</td>
                                 <td>{{ $order->phone_no }}</td>
                                 <td>₹ {{ number_format($order->total_amount, 2) }}</td>
