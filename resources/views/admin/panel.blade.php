@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>E-Commerce Admin</title>
+    <title>My Admin</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -53,6 +53,11 @@
        class="nav-link {{ request()->routeIs('admin.customers') ? 'active' : '' }}">
         <i class="bi bi-people"></i> Customers
     </a>
+    <a href="{{ route('admin.email-settings') }}"
+       class="nav-link {{ request()->routeIs('admin.email-settings') ? 'active' : '' }}">
+        <i class="bi bi-envelope-fill me-2"></i>email-settings
+    </a>
+
     <div class="menu-title">Appearance</div>
 
     <a href="javascript:void(0);" onclick="toggleThemeMenu()" class="d-flex justify-content-between align-items-center">

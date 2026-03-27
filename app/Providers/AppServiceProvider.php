@@ -6,7 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Order;
 use Illuminate\Support\Facades\Session;
-
+use App\Models\EmailSetting;
+use Illuminate\Support\Facades\Config;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -32,5 +33,6 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('orderCount', $orderCount);
         });
+
     }
 }

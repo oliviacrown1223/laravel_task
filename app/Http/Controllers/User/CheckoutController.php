@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Mail\OrderPlacedMail;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Config;
+use App\Models\EmailSetting;
 
 class CheckoutController extends Controller
 {
@@ -87,8 +91,62 @@ class CheckoutController extends Controller
 
         // ✅ Clear cart
         session()->forget('cart');
+        // Load dynamic config
+
+
+// Send mail
+
+
+
+
+
+        EmailSetting::create([
+            'mailer' => Config::get('mail.default'),
+            'host' => Config::get('mail.mailers.smtp.host'),
+            'port' => Config::get('mail.mailers.smtp.port'),
+            'username' => Config::get('mail.mailers.smtp.username'),
+            'password' => Config::get('mail.mailers.smtp.password'),
+            'encryption' => Config::get('mail.mailers.smtp.encryption'),
+            'from_email' => Config::get('mail.from.address'),
+            'from_name' => Config::get('mail.from.name'),
+        ]);
+        $setting = EmailSetting::latest()->first();
+        // ✅ Apply config dynamically
+
+        if ($setting) {
+            Config::set('mail.default', $setting->mailer);
+
+            Config::set('mail.mailers.smtp.host', $setting->host);
+            Config::set('mail.mailers.smtp.port', $setting->port);
+            Config::set('mail.mailers.smtp.username', $setting->username);
+            Config::set('mail.mailers.smtp.password', $setting->password);
+            Config::set('mail.mailers.smtp.encryption', $setting->encryption);
+
+            Config::set('mail.from.address', $setting->from_email);
+            Config::set('mail.from.name', $setting->from_name);
+        }
+
+        // ===============================
+        // 📩 SEND MAIL
+        // ===============================
+
+        try {
+            Mail::to($order->email)->send(new OrderPlacedMail($order));
+        } catch (\Exception $e) {
+            \Log::error('Mail failed: ' . $e->getMessage());
+        }
 
         return redirect()->route('order.view', $order->id)
             ->with('success', 'Order placed successfully!');
+
+
+
+       /* try {
+            Mail::to($order->email)->send(new OrderPlacedMail($order));
+        } catch (\Exception $e) {
+            \Log::error('Mail sending failed: '.$e->getMessage());
+        }*/
+
+//return redirect()->route('email.form')->with('order_success', true);
     }
 }

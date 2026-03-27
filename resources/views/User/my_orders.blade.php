@@ -13,8 +13,8 @@
                 <tr>
                     <th>Order ID</th>
                     <th>Total</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th>Payment</th>
+                    <th>Order view</th>
                 </tr>
                 </thead>
 

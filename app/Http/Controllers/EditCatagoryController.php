@@ -90,15 +90,15 @@ class EditCatagoryController extends Controller
     }
     public function changeStatus($id)
     {
-        $variant = Category::find($id);
+        $category = Category::find($id);
 
-        if($variant->status == 1){
-            $variant->status = 0;
+        if($category->status == 1){
+            $category->status = 0;
         }else{
-            $variant->status = 1;
+            $category->status = 1;
         }
 
-        $variant->save();
+        $category->save();
 
         return redirect()->back();
     }

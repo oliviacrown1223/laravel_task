@@ -39,7 +39,7 @@
                             <th>Customer</th>
                             <th>Phone</th>
                             <th>Total</th>
-                            <th>Status</th>
+                            <th>Payment</th>
                             <th width="200">Action</th>
                         </tr>
                         </thead>

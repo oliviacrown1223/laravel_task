@@ -5,6 +5,7 @@ use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\OrderController;
 
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\EmailController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -42,7 +43,10 @@ Route::get('/checkout', [CheckoutController::class, 'index'])
     ->middleware(['userlogin']);
 Route::post('/checkout', [CheckoutController::class, 'place'])->name('checkout.place');
 
-
+Route::get('/email-form', function () {
+    return view('User.email.form');
+})->name('email.form');
+Route::post('/send-email', [EmailController::class, 'send'])->name('send.email');
 
 /*Route::get('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
 Route::get('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');

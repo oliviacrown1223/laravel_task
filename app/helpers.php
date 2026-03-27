@@ -15,3 +15,4 @@ if (!function_exists('getFooterMenus')) {
         return Menu::where('type', 'footer')->orderBy('id', 'asc')->get();
     }
 }
+

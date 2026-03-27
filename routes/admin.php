@@ -10,7 +10,7 @@ use App\Http\Controllers\VariantsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\EmailSettingController;
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
 
@@ -24,7 +24,7 @@ Route::get('/admin', [AdminController::class, 'dashboard'])
 Route::get('/admin/products',[ProductController::class,'index'])
     ->name('products.index');
 
-Route::get('/admin/logout', [UserController::class, 'logout'])->name('admin.logout');
+Route::post('/admin/logout', [UserController::class, 'logout'])->name('admin.logout');
 
 
 Route::get('/admin/product-add',[ProductController::class,'create'])->name('product.create');
@@ -92,3 +92,11 @@ Route::put('/admin/orders/status/{id}', [OrderController::class, 'toggleStatus']
 
 Route::get('/admin/customers', [App\Http\Controllers\AdminController::class, 'customers'])
     ->name('admin.customers');
+
+
+
+
+
+Route::get('/admin/email-settings', [EmailSettingController::class, 'index'])->name('admin.email-settings');
+Route::post('/admin/email-settings', [EmailSettingController::class, 'store']);
+Route::get('/admin/test-mail', [EmailSettingController::class, 'test'])->name('email.test');

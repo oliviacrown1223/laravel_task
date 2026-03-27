@@ -18,59 +18,16 @@
 <head>
     <title>Admin Login</title>
 
-    ```
+
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        body{
-            background: linear-gradient(135deg,#667eea,#764ba2);
-            height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            font-family:Arial;
-        }
-
-        .login-box{
-            background:white;
-            padding:40px;
-            border-radius:12px;
-            width:350px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .login-box h3{
-            text-align:center;
-            margin-bottom:25px;
-            font-weight:bold;
-        }
-
-        .form-control{
-            border-radius:8px;
-        }
-
-        .btn-login{
-            width:100%;
-            border-radius:8px;
-            font-weight:bold;
-        }
-
-        .error-msg{
-            text-align:center;
-            color:red;
-            margin-top:10px;
-        }
-    </style>
-    ```
-
+    <link rel="stylesheet" href="{{ asset('css/userlogin.css') }}">
 </head>
 
 <body>
 
 <div class="login-box">
 
-    ```
     <h3>Admin Login1</h3>
 
     <form method="POST" action="{{ route('admin.login.submit') }}">
@@ -89,7 +46,7 @@
             {{ session('msg') }}
         </div>
     @endif
-    ```
+
 
 </div>
 

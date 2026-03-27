@@ -80,7 +80,7 @@
             <!-- Name -->
             <div class="mb-3">
                 <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+
                     <input type="text" name="name" class="form-control"
                            placeholder="Full Name" value="{{ old('name') }}">
                 </div>
@@ -89,7 +89,7 @@
             <!-- Phone -->
             <div class="mb-3">
                 <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+
                     <input type="number" name="phone" class="form-control"
                            placeholder="Phone Number" value="{{ old('phone') }}">
                 </div>
@@ -98,7 +98,7 @@
             <!-- Email -->
             <div class="mb-3">
                 <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+
                     <input type="email" name="email" class="form-control"
                            placeholder="Email Address" value="{{ old('email') }}">
                 </div>
@@ -107,7 +107,7 @@
             <!-- Password -->
             <div class="mb-3">
                 <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+
                     <input type="password" name="password" class="form-control"
                            placeholder="Password">
                 </div>
@@ -116,7 +116,7 @@
             <!-- Confirm Password -->
             <div class="mb-3">
                 <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
+
                     <input type="password" name="password_confirmation" class="form-control"
                            placeholder="Confirm Password">
                 </div>

@@ -66,7 +66,7 @@
                                 </span>
 
                                     <!-- PLUS -->
-                                    @if(isset($item['stock']) && $item['qty'] < $item['stock'])
+                                    @if(isset($item['stock']) && $item['qty'] <= $item['stock'])
                                         <a href="{{ route('cart.increase', $key) }}"
                                            class="btn btn-sm">+</a>
                                     @else
@@ -76,7 +76,7 @@
                                 </div>
 
                                 <!-- STOCK MESSAGE -->
-                                @if(isset($item['stock']) && $item['qty'] >= $item['stock'])
+                                @if(isset($item['stock']) && $item['qty'] > $item['stock'])
                                     <div class="text-danger small mt-1">
                                         Stock not available
                                     </div>
