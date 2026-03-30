@@ -90,12 +90,48 @@ class CheckoutController extends Controller
         ]);
 
         // ✅ Clear cart
-        session()->forget('cart');
+
         // Load dynamic config
 
 
-// Send mail
+        if ($request->payment_type == 'online') {
 
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            $lineItems = [];
+
+            foreach ($cart as $item) {
+                $lineItems[] = [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => $item['name'],
+                        ],
+                        'unit_amount' => $item['price'] * 100,
+                    ],
+                    'quantity' => $item['qty'],
+                ];
+            }
+
+            $session = \Stripe\Checkout\Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => $lineItems,
+                'mode' => 'payment',
+
+                // 🔥 IMPORTANT: pass order id
+                'success_url' => route('payment.success', $order->id),
+                'cancel_url' => route('payment.cancel', $order->id),
+            ]);
+
+            return redirect($session->url);
+        }
+        if ($request->payment_type == 'cod' || $request->payment_type == 'upi') {
+
+            session()->forget('cart'); // ✅ move here
+
+            return redirect()->route('order.view', $order->id)
+                ->with('success', 'Order placed successfully!');
+        }
 
 
 
@@ -136,17 +172,79 @@ class CheckoutController extends Controller
             \Log::error('Mail failed: ' . $e->getMessage());
         }
 
-        return redirect()->route('order.view', $order->id)
-            ->with('success', 'Order placed successfully!');
 
 
 
-       /* try {
+            return redirect()->route('order.view', $order->id)
+                ->with('success', 'Order placed successfully!');
+
+
+
+    }
+    public function paymentSuccess($id)
+    {
+        $order = Order::findOrFail($id);
+        EmailSetting::create([
+            'mailer' => Config::get('mail.default'),
+            'host' => Config::get('mail.mailers.smtp.host'),
+            'port' => Config::get('mail.mailers.smtp.port'),
+            'username' => Config::get('mail.mailers.smtp.username'),
+            'password' => Config::get('mail.mailers.smtp.password'),
+            'encryption' => Config::get('mail.mailers.smtp.encryption'),
+            'from_email' => Config::get('mail.from.address'),
+            'from_name' => Config::get('mail.from.name'),
+        ]);
+        $setting = EmailSetting::latest()->first();
+        // ✅ Apply config dynamically
+
+        if ($setting) {
+            Config::set('mail.default', $setting->mailer);
+
+            Config::set('mail.mailers.smtp.host', $setting->host);
+            Config::set('mail.mailers.smtp.port', $setting->port);
+            Config::set('mail.mailers.smtp.username', $setting->username);
+            Config::set('mail.mailers.smtp.password', $setting->password);
+            Config::set('mail.mailers.smtp.encryption', $setting->encryption);
+
+            Config::set('mail.from.address', $setting->from_email);
+            Config::set('mail.from.name', $setting->from_name);
+        }
+
+        // ===============================
+        // 📩 SEND MAIL
+        // ===============================
+
+        try {
             Mail::to($order->email)->send(new OrderPlacedMail($order));
         } catch (\Exception $e) {
-            \Log::error('Mail sending failed: '.$e->getMessage());
-        }*/
+            \Log::error('Mail failed: ' . $e->getMessage());
+        }
 
-//return redirect()->route('email.form')->with('order_success', true);
+
+
+
+
+
+        // ✅ Mark as paid
+        $order->update([
+            'payment_status' => 'done'
+        ]);
+
+        // ✅ Clear cart here (AFTER payment)
+        session()->forget('cart');
+
+        return view('payment-success', compact('order'));
+    }
+
+    public function paymentCancel($id)
+    {
+        $order = Order::findOrFail($id);
+
+        $order->update([
+            'payment_status' => 'pending'
+        ]);
+
+        return redirect()->route('checkout')
+            ->with('error', 'Payment cancelled!');
     }
 }

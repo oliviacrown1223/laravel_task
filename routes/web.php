@@ -1,13 +1,13 @@
 <?php
+
+use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\EmailSettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use \App\Http\Controllers\StripePaymentController;
 
 /*require __DIR__.'/../routes/user.php';
 require __DIR__.'/../routes/admin.php';*/
-
-
-
 
 
 // Show login form
@@ -42,6 +42,23 @@ Route::get('/check-mail', function () {
         'from_name' => config('mail.from.name'),
     ];
 });
+Route::get('/force-mail', function () {
+    config([
+        'mail.mailers.smtp.host' => env('MAIL_HOST'),
+    ]);
 
+    return config('mail.mailers.smtp.host');
+});
 Route::get('/stripe', [StripePaymentController::class, 'stripe'])->name('stripe.form');
 Route::post('/stripe', [StripePaymentController::class, 'stripePost'])->name('stripe.post');
+
+
+Route::get('/payment-success/{id}', [CheckoutController::class, 'paymentSuccess'])
+    ->name('payment.success');
+
+Route::get('/payment-cancel/{id}', [CheckoutController::class, 'paymentCancel'])
+    ->name('payment.cancel');
+//Route::get('payment-successfully', [EmailSettingController::class, 'test'])->name('payment.order');
+
+//Route::post('/place-order', [EmailSettingController::class, 'test'])->name('order.place');
+//Route::get('/payment-successfully', [EmailSettingController::class, 'paymentSuccess'])->name('payment.success');

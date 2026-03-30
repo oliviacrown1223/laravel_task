@@ -48,6 +48,8 @@ Route::get('/email-form', function () {
 })->name('email.form');
 Route::post('/send-email', [EmailController::class, 'send'])->name('send.email');
 
+
+
 /*Route::get('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
 Route::get('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 Route::get('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');*/

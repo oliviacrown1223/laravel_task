@@ -141,6 +141,7 @@
         });
     });
 </script>
-
+<!-- 🔥 VERY IMPORTANT -->
+@stack('scripts')
 </body>
 </html>

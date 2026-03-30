@@ -15,6 +15,7 @@
         </script>
     @endif
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <div class="container py-4">
 
         <h4 class="mb-4">Orders</h4>
@@ -85,8 +86,7 @@
                                     </a>
 
                                     <a href="{{ route('admin.orders.delete', $order->id) }}"
-                                       class="btn btn-sm btn-danger"
-                                       onclick="return confirm('Are you sure you want to delete this order?')">
+                                       class="btn btn-sm btn-danger delete-btn">
                                         Delete
                                     </a>
 
@@ -111,24 +111,56 @@
     </div>
 
 @endsection
-<script>
-    function confirmStatus(id, currentStatus) {
+@push('scripts')
 
-        let newStatus = currentStatus === 'pending' ? 'Done' : 'Pending';
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Change status to " + newStatus + "?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#28a745',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, change it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('status-form-' + id).submit();
+    <script>
+        function confirmStatus(id, currentStatus) {
+
+            let newStatus = currentStatus === 'pending' ? 'Done' : 'Pending';
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Change status to " + newStatus + "?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, change it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('status-form-' + id).submit();
+                }
+            });
+        }
+    </script>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.delete-btn')) {
+                e.preventDefault();
+
+                let button = e.target.closest('.delete-btn');
+                let url = button.getAttribute('href');
+
+                Swal.fire({
+                    title: 'Delete Order?',
+                    text: "This action cannot be undone!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, Delete',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+                });
             }
         });
-    }
-</script>
+    </script>
+
+@endpush

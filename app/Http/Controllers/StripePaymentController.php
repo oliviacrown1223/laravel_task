@@ -23,7 +23,26 @@ class StripePaymentController extends Controller
                 "description" => "Test Payment",
             ]);
 
-            return back()->with('success', 'Payment successful!');
+            $orderId = session()->get('order_id');
+
+            $order = \App\Models\Order::with('items')->find($orderId);
+
+            if ($order) {
+
+                // ✅ UPDATE STATUS (pending → success)
+                $order->update([
+                    'payment_status' => 'success'
+                ]);
+
+                // ✅ SEND EMAIL
+                \Mail::to($order->email)->send(new \App\Mail\OrderPlacedMail($order));
+
+                // ✅ CLEAR CART
+                session()->forget('cart');
+            }
+
+            // ✅ REDIRECT SUCCESS PAGE
+            return redirect()->route('payment.success');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

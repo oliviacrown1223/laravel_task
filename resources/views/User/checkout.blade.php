@@ -37,13 +37,6 @@
                         @error('name')
                         <div class="text-danger mb-2">{{ $message }}</div>
                         @enderror
-                       {{-- <lable>costomers_id</lable>
-                        <input type="text" name="costomers_id" class="form-control mb-2 @error('costomers_id') is-invalid @enderror"
-                               value="{{session()->get('customer_id')}}" readonly>
-                        @error('costomers_id')
-                        <div class="text-danger mb-2">{{ $message }}</div>
-                        @enderror--}}
-                        <!-- Phone -->
                         <label>Phone</label>
 
                         <div class="input-group mb-2">
@@ -83,18 +76,33 @@
                         <div class="text-danger mb-2">{{ $message }}</div>
                         @enderror
 
-                        <label>Payment Type</label>
+                      {{--  <label>Payment Type</label>
                         <select name="payment_type" class="form-control mb-3 @error('payment_type') is-invalid @enderror">
                             <option value="">-- Select Payment Type --</option>
                             <option value="cod" {{ old('payment_type') == 'cod' ? 'selected' : '' }}>Cash on Delivery</option>
                             <option value="online" {{ old('payment_type') == 'online' ? 'selected' : '' }}>Online Payment</option>
                         </select>
+--}}
+                        <label>Payment Type</label>
 
+                        <select name="payment_type" id="payment_type"
+                                class="form-control mb-3 @error('payment_type') is-invalid @enderror">
+
+                            <option value="">-- Select Payment Type --</option>
+
+                            <option value="cod" {{ old('payment_type') == 'cod' ? 'selected' : '' }}>
+                                Cash on Delivery
+                            </option>
+
+                            <option value="online" {{ old('payment_type') == 'online' ? 'selected' : '' }}>
+                                Online Payment
+                            </option>
+                        </select>
                         @error('payment_type')
                         <div class="text-danger mb-2">{{ $message }}</div>
                         @enderror
 
-                        <button class="btn btn-success w-100 rounded-pill">
+                        <button type="submit" class="btn btn-primary w-100" id="placeOrderBtn">
                             Place Order
                         </button>
 
@@ -137,5 +145,42 @@
         </div>
 
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script>
+        document.getElementById('placeOrderBtn').addEventListener('click', function (e) {
+
+            const paymentType = document.getElementById('payment_type').value;
+
+            if (!paymentType) {
+                e.preventDefault();
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Select Payment Method',
+                    text: 'Please choose COD or Online Payment'
+                });
+                return;
+            }
+
+            if (paymentType === 'online') {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Confirm Payment',
+                    text: 'Proceed to secure Stripe payment?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Pay Now 💳'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // ✅ THIS IS THE FIX
+                        document.querySelector('form').submit();
+                    }
+                });
+            }
+
+            // COD → normal submit
+        });
+    </script>
 @endsection

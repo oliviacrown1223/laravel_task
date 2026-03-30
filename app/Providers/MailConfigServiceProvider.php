@@ -18,7 +18,7 @@ class   MailConfigServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
+   /* public function boot(): void
     {
         try {
             $setting = EmailSetting::first();
@@ -39,5 +39,5 @@ class   MailConfigServiceProvider extends ServiceProvider
         } catch (\Exception $e) {
             // Avoid crash if table not created yet
         }
-    }
+    }*/
 }

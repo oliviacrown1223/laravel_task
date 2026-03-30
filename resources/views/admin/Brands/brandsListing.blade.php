@@ -74,6 +74,7 @@
                     <a href="/brand/delete/{{ $p->id }}" class="btn btn-danger btn-sm" style="border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
                         <i class="fa fa-trash"></i> Delete
                     </a>
+
                 </td>
             </tr>
         @endforeach
