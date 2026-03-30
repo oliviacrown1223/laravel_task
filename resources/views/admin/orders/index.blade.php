@@ -137,30 +137,6 @@
         }
     </script>
 
-    <script>
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.delete-btn')) {
-                e.preventDefault();
 
-                let button = e.target.closest('.delete-btn');
-                let url = button.getAttribute('href');
-
-                Swal.fire({
-                    title: 'Delete Order?',
-                    text: "This action cannot be undone!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Yes, Delete',
-                    cancelButtonText: 'Cancel',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = url;
-                    }
-                });
-            }
-        });
-    </script>
 
 @endpush

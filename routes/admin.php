@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EditCatagoryController;
@@ -93,10 +94,14 @@ Route::put('/admin/orders/status/{id}', [OrderController::class, 'toggleStatus']
 Route::get('/admin/customers', [App\Http\Controllers\AdminController::class, 'customers'])
     ->name('admin.customers');
 
-
-
-
+//Email-Satting
 
 Route::get('/admin/email-settings', [EmailSettingController::class, 'index'])->name('admin.email-settings');
 Route::post('/admin/email-settings', [EmailSettingController::class, 'store']);
 Route::get('/admin/test-mail', [EmailSettingController::class, 'test'])->name('email.test');
+
+
+//Coupon
+
+Route::get('admin/coupons', [CouponController::class, 'index'])->name('admin.coupons');
+Route::post('/admin/coupon/store', [CouponController::class, 'store'])->name('coupon.store');

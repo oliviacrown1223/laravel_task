@@ -57,7 +57,10 @@
        class="nav-link {{ request()->routeIs('admin.email-settings') ? 'active' : '' }}">
         <i class="bi bi-envelope-fill me-2"></i>email-settings
     </a>
-
+    <a href="{{ route('admin.coupons') }}"
+       class="nav-link {{ request()->routeIs('admin.coupons') ? 'active' : '' }}">
+        <i class="bi bi-tag-fill me-2"></i> Coupon
+    </a>
     <div class="menu-title">Appearance</div>
 
     <a href="javascript:void(0);" onclick="toggleThemeMenu()" class="d-flex justify-content-between align-items-center">
@@ -143,5 +146,33 @@
 </script>
 <!-- 🔥 VERY IMPORTANT -->
 @stack('scripts')
+<script>
+    document.addEventListener('click', function(e) {
+
+        let btn = e.target.closest('.delete-btn');
+
+        if (btn) {
+            e.preventDefault();
+
+            let url = btn.getAttribute('href');
+
+            Swal.fire({
+                title: 'Delete?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        }
+
+    });
+</script>
 </body>
 </html>

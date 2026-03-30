@@ -133,14 +133,57 @@
 
                     <hr>
 
-                    <h5 class="d-flex justify-content-between">
+                    {{--<h5 class="d-flex justify-content-between">
                         <span>Total</span>
                         <strong>₹ {{ $total }}</strong>
+                    </h5>--}}
+                    @php
+                        $discount = 0;
+
+                        if(session('coupon')){
+                            $coupon = session('coupon');
+
+                            if($coupon['type'] == 'percentage'){
+                                $discount = ($total * $coupon['discount']) / 100;
+                            } else {
+                                $discount = $coupon['discount'];
+                            }
+                        }
+
+                        $finalTotal = $total - $discount;
+                    @endphp
+                    <hr>
+                    <p class="d-flex justify-content-between">
+                        <span>Subtotal</span>
+                        <span>₹ {{ $total }}</span>
+                    </p>
+                    <p class="d-flex justify-content-between text-success">
+                        <span>Discount</span>
+                        <span>- ₹ {{ $discount }}</span>
+                    </p>
+                    <h5 class="d-flex justify-content-between">
+                        <span>Total</span>
+                        <strong>₹ {{ $finalTotal }}</strong>
                     </h5>
-
                 </div>
-
             </div>
+            <hr>
+
+            <h6>Apply Coupon</h6>
+
+            <form method="POST" action="{{ route('apply.coupon') }}">
+                @csrf
+                <div class="input-group mb-2">
+                    <input type="text" name="coupon_code" class="form-control" placeholder="Enter coupon code">
+                    <button class="btn btn-success">Apply</button>
+                </div>
+            </form>
+
+            @if(session('coupon'))
+                <div class="alert alert-success">
+                    Coupon Applied: {{ session('coupon')['code'] }}
+                </div>
+            @endif
 
         </div>
 

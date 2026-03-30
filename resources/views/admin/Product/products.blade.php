@@ -54,7 +54,7 @@
                     <a href="/edit/{{ $p->id }}" class="btn btn-warning btn-sm me-1" style="border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
                         <i class="fa fa-edit"></i> Edit
                     </a>
-                    <a href="/delete/{{ $p->id }}" class="btn btn-danger btn-sm" style="border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
+                    <a href="/delete/{{ $p->id }}" class="btn btn-sm btn-danger delete-btn" style="border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
                         <i class="fa fa-trash"></i> Delete
                     </a>
                 </td>

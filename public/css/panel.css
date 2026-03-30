@@ -1,119 +1,183 @@
-
+/* Body */
 body{
     margin:0;
     font-family: 'Segoe UI', sans-serif;
-    background:#f5f6fa;
+    background:#f1f5f9;
 }
+.content{
+    margin-left:250px;
+    padding:25px;
+    min-height:100vh;
 
+    /* 🔥 Premium soft gradient */
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+
+    /* smooth feel */
+    transition: all 0.3s ease;
+}
+.content-box{
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
+    margin-bottom:20px;
+}
 /* Sidebar */
 .sidebar{
-    width:240px;
+    width:250px;
     height:100vh;
     position:fixed;
     top:0;
     left:0;
-    background: #fcfcfc;
+    background: linear-gradient(180deg, #1e293b, #0f172a);
     color:#fff;
-    padding-top:20px;
-    box-shadow:5px 0 20px rgba(0,0,0,0.2);
+    padding-top:10px;
+    box-shadow:5px 0 25px rgba(0,0,0,0.25);
+    overflow-y:auto;
 }
 
+/* Logo */
+.logo-box {
+    text-align: center;
+    padding: 20px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logo-img {
+    height: 50px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.logo-img:hover {
+    transform: scale(1.1);
+}
+
+/* Title */
 .sidebar h4{
     text-align:center;
-    margin-bottom:30px;
+    margin:15px 0;
     font-weight:600;
-    color:black
+    color:#fff;
 }
 
+/* Menu Title */
+.menu-title{
+    font-size:11px;
+    padding:10px 20px;
+    color:#94a3b8;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+/* Links */
 .sidebar a{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:12px;
     padding:12px 20px;
-    color:black;
+    color:#cbd5e1;
     text-decoration:none;
-    transition:0.3s;
+    transition:all 0.3s ease;
+    border-left:3px solid transparent;
 }
 
+/* Hover Effect */
 .sidebar a:hover{
-
-    padding-left:23px;
-    color:#b566ed;
-
+    background: rgba(255,255,255,0.05);
+    padding-left:25px;
+    color:#fff;
 }
 
+/* Active Menu */
 .sidebar a.active{
-    color:#b566ed;
+    background: #2563eb;
+    color:#fff;
+    border-left:3px solid #60a5fa;
 }
 
-/* Section title */
-.menu-title{
-    font-size:12px;
-    padding:10px 20px;
-    opacity:0.7;
-    text-transform:uppercase;
-    color: black;
+/* Icons */
+.sidebar i{
+    font-size:18px;
+}
+
+/* Submenu */
+#themeMenu{
+    display:none;
+    padding-left:30px;
+}
+
+#themeMenu a{
+    font-size:14px;
+    padding:8px 0;
+    color:#94a3b8;
+}
+
+#themeMenu a:hover{
+    color:#fff;
 }
 
 /* Content */
-.content{
-    margin-left:240px;
-    padding:20px;
-}
 
-/* Top Navbar */
+
+/* Topbar */
 .topbar{
     background:#fff;
     padding:15px 20px;
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    border-radius:12px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.05);
     margin-bottom:20px;
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
+/* Logout Button */
 .logout-btn{
     border:none;
-    background:#ff4d4d;
+    background:#ef4444;
     color:#fff;
     padding:8px 15px;
-    border-radius:5px;
+    border-radius:6px;
+    transition:0.3s;
 }
 
 .logout-btn:hover{
-    background:#e60000;
+    background:#dc2626;
 }
+
+/* Page Heading */
 h1{
-    color:black;
-    align-items: center;
-    margin: 0px;
-    padding: 0px;
+    color:#1e293b;
+    margin:0;
 }
 
-
-
-.active{
-    text-align: center;
-    height: 60px;
-    backdrop-filter: blur(5px);
+/* Scrollbar (Premium look) */
+.sidebar::-webkit-scrollbar {
+    width:6px;
 }
-.logo-box {
-    text-align: center;
-    padding: 15px 10px;
-    border-bottom: 1px solid #eee;
+.sidebar::-webkit-scrollbar-thumb {
+    background:#475569;
+    border-radius:10px;
 }
-
-.logo-img {
-    height: 50px;
-    width: auto;
-    object-fit: contain;
-    border-radius: 8px;
+/* Active Moving Indicator */
+#activeIndicator {
+    position: absolute;
+    left: 0;
+    width: 4px;
+    height: 40px;
+    background: linear-gradient(180deg, #60a5fa, #2563eb);
+    border-radius: 0 5px 5px 0;
     transition: all 0.3s ease;
 }
 
-/* Hover Effect */
-.logo-img:hover {
-    transform: scale(1.08);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+/* Make sidebar relative */
+.sidebar {
+    position: fixed;
+}
+
+/* Better spacing for links */
+.sidebar a {
+    position: relative;
+    height: 45px;
 }

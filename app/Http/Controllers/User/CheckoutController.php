@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Config;
 use App\Models\EmailSetting;
-
+use App\Models\Coupon;
+use Carbon\Carbon;
 class CheckoutController extends Controller
 {
     public function index()
@@ -85,16 +86,42 @@ class CheckoutController extends Controller
         }
 
         // ✅ Update total
-        $order->update([
+       /* $order->update([
             'total_amount' => $total
+        ]);*/
+        // ✅ APPLY COUPON
+        $coupon = session()->get('coupon');
+        $discount = 0;
+
+        if ($coupon) {
+            if ($coupon['type'] == 'percentage') {
+                $discount = ($total * $coupon['discount']) / 100;
+            } else {
+                $discount = $coupon['discount'];
+            }
+
+            // ✅ increase usage count
+            \App\Models\Coupon::where('id', $coupon['id'])
+                ->increment('used_count');
+        }
+
+// ✅ Final total
+        $finalTotal = $total - $discount;
+
+// ✅ Update order with final amount
+        $order->update([
+            'total_amount' => $finalTotal
         ]);
+
+// ✅ Remove coupon after use
+        session()->forget('coupon');
 
         // ✅ Clear cart
 
         // Load dynamic config
 
 
-        if ($request->payment_type == 'online') {
+       /* if ($request->payment_type == 'online') {
 
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -131,7 +158,7 @@ class CheckoutController extends Controller
 
             return redirect()->route('order.view', $order->id)
                 ->with('success', 'Order placed successfully!');
-        }
+        }*/
 
 
 
@@ -166,11 +193,11 @@ class CheckoutController extends Controller
         // 📩 SEND MAIL
         // ===============================
 
-        try {
+       /* try {
             Mail::to($order->email)->send(new OrderPlacedMail($order));
         } catch (\Exception $e) {
             \Log::error('Mail failed: ' . $e->getMessage());
-        }
+        }*/
 
 
 
@@ -246,5 +273,31 @@ class CheckoutController extends Controller
 
         return redirect()->route('checkout')
             ->with('error', 'Payment cancelled!');
+    }
+
+
+    public function applyCoupon(Request $request)
+    {
+        $request->validate([
+            'coupon_code' => 'required'
+        ]);
+
+        $coupon = Coupon::where('code', $request->coupon_code)->first();
+
+        if (!$coupon) {
+            return back()->with('error', 'Invalid coupon');
+        }
+
+        if ($coupon->expiry_date < now()) {
+            return back()->with('error', 'Coupon expired');
+        }
+
+        if ($coupon->used_count >= $coupon->usage_limit) {
+            return back()->with('error', 'Coupon limit reached');
+        }
+
+        session()->put('coupon', $coupon);
+
+        return back()->with('success', 'Coupon applied');
     }
 }
