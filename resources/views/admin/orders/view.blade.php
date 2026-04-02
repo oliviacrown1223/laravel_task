@@ -27,10 +27,24 @@
                     <span>₹ {{ $item->price * $item->qty }}</span>
                 </div>
             @endforeach
+            @php
+                $subtotal = 0;
+
+                foreach($order->items as $item){
+                    $subtotal += $item->price * $item->qty;
+                }
+
+                $discount = $subtotal - $order->total_amount;
+            @endphp
+            <hr>
+            <div class="d-flex justify-content-between text-success">
+                <span>Discount</span>
+                <span>- ₹{{ number_format($discount, 2) }}</span>
+            </div>
 
             <hr>
 
-            <h5>Total: ₹ {{ $order->total_amount }}</h5>
+            <h5>Total: ₹ {{ number_format($order->total_amount, 2) }}</h5>
         </div>
 
 

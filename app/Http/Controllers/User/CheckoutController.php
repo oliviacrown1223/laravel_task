@@ -85,24 +85,38 @@ class CheckoutController extends Controller
             ]);
         }
 
-        // ✅ Update total
-       /* $order->update([
-            'total_amount' => $total
-        ]);*/
-        // ✅ APPLY COUPON
         $coupon = session()->get('coupon');
         $discount = 0;
 
         if ($coupon) {
+
+            $couponData = \App\Models\Coupon::find($coupon['id']);
+
+            // ❌ Coupon not found
+            if (!$couponData) {
+                return back()->with('error', 'Invalid coupon');
+            }
+
+            // ❌ Expired check
+            if ($couponData->expiry_date && $couponData->expiry_date < now()) {
+                return back()->with('error', 'Coupon expired');
+            }
+
+            // ❌ Usage limit check (🔥 IMPORTANT)
+            if ($couponData->used_count >= $couponData->usage_limit) {
+                return back()->with('error', 'Coupon usage limit reached');
+            }
+
+            // ✅ Apply discount
             if ($coupon['type'] == 'percentage') {
                 $discount = ($total * $coupon['discount']) / 100;
             } else {
                 $discount = $coupon['discount'];
             }
 
-            // ✅ increase usage count
-            \App\Models\Coupon::where('id', $coupon['id'])
-                ->increment('used_count');
+            // ✅ Increase usage count
+            $couponData->increment('used_count');
+
         }
 
 // ✅ Final total
@@ -110,11 +124,13 @@ class CheckoutController extends Controller
 
 // ✅ Update order with final amount
         $order->update([
-            'total_amount' => $finalTotal
+            'total_amount' => $finalTotal,
+            'discount_amount' => $discount
         ]);
 
 // ✅ Remove coupon after use
         session()->forget('coupon');
+        session()->forget('cart');
 
         // ✅ Clear cart
 

@@ -102,6 +102,18 @@ Route::get('/admin/test-mail', [EmailSettingController::class, 'test'])->name('e
 
 
 //Coupon
+Route::get('/admin/coupons', [CouponController::class, 'index'])
+    ->name('coupon.index');
 
-Route::get('admin/coupons', [CouponController::class, 'index'])->name('admin.coupons');
-Route::post('/admin/coupon/store', [CouponController::class, 'store'])->name('coupon.store');
+Route::get('/admin/coupon/create', [CouponController::class, 'create'])
+    ->name('coupon.create');
+
+Route::post('/admin/coupon/store', [CouponController::class, 'store'])
+    ->name('coupon.store');
+
+Route::get('/admin/coupon/delete/{id}',[CouponController::class,'delete'])->name('coupon.delete');
+Route::get('/admin/coupon/edit/{id}', [CouponController::class, 'edit'])->name('coupon.edit');
+Route::post('/admin/coupon/update/{id}', [CouponController::class, 'update'])->name('coupon.update');
+
+
+

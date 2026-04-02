@@ -57,7 +57,7 @@
        class="nav-link {{ request()->routeIs('admin.email-settings') ? 'active' : '' }}">
         <i class="bi bi-envelope-fill me-2"></i>email-settings
     </a>
-    <a href="{{ route('admin.coupons') }}"
+    <a href="{{ route('coupon.index') }}"
        class="nav-link {{ request()->routeIs('admin.coupons') ? 'active' : '' }}">
         <i class="bi bi-tag-fill me-2"></i> Coupon
     </a>

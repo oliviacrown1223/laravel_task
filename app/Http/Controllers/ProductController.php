@@ -66,7 +66,7 @@ class ProductController extends Controller
             'name'         => 'required|string|max:255',
             'price'        => 'required|numeric|min:1',
             'listed_price' => 'required|numeric|min:1|gte:price',
-            'Description'  => 'required|string|max:1000',
+            'description' => 'required',
             'brands'       => 'required|exists:brands,id',
             'categories'   => 'required|exists:categories,id',
             'image'        => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
@@ -82,7 +82,7 @@ class ProductController extends Controller
             'listed_price.numeric'  => 'Listed price must be a number',
             'listed_price.gte'      => 'Listed price must be greater than or equal to price',
 
-            'Description.required'  => 'Please enter description',
+            'description.required' => 'Please enter description',
 
             'brands.required'       => 'Please select brand',
             'brands.exists'         => 'Selected brand is invalid',
@@ -96,16 +96,13 @@ class ProductController extends Controller
             'image.max'             => 'Image size must be less than 2MB',
         ]);
 
-        if ($request->fails()) {
-            return back()->withErrors($request)->withInput(); // ✅ HERE
-        }
 
         $product = new Product();
 
         $product->name = $request->name;
         $product->price = $request->price;
         $product->listed_price = $request->listed_price;
-        $product->description = $request->Description;
+        $product->Description = $request->Description;
         $product->brands = $request->brands;
         $product->categories = $request->categories;
 

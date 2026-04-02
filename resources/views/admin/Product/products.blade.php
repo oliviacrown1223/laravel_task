@@ -47,7 +47,7 @@
                     @endif
                 </td>
                 <td>{{ number_format($p->listed_price,2) }}</td>
-                <td>{{ Str::limit($p->Description, 50) }}</td>
+                <td>{{ Str::limit($p->Description) }}</td>
                 <td>{{ $p->brand->name ?? 'N/A' }}</td>
                 <td>{{ $p->category->name ?? 'N/A' }}</td>
                 <td>

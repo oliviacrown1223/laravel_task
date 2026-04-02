@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 class CouponController extends Controller
 {
-
+    public function create()
+    {
+        return view('admin.coupon.index'); // your big blade code
+    }
 
     public function store(Request $request)
     {
@@ -35,18 +38,57 @@ class CouponController extends Controller
 
         Coupon::create([
             'name' => $request->name,
-            'code' => strtoupper(Str::random(8)), // 🔥 AUTO CODE
+            'code' => $request->code ?? strtoupper(Str::random(8)), // 🔥 AUTO CODE
+            'usage_limit' => $request->usage_limit,
+            'used_count' => 0,
+            'expiry_date' => $request->expiry_date,
+            'type' => $request->type,
+            'discount' => $request->discount,
+        ]);
+
+
+        return redirect()->route('coupon.index')
+            ->with('success', 'Coupon added successfully');
+
+    }
+
+    public function index()
+    {
+        $coupons = Coupon::latest()->get();
+        return view('admin.coupon.coupon', compact('coupons'));
+    }
+
+    public function delete($id)
+    {
+         Coupon::destroy($id);
+        return redirect()->route('coupon.index');
+    }
+    public function edit($id)
+    {
+        $coupon = Coupon::findOrFail($id);
+        return view('admin.coupon.EditCoupon', compact('coupon'));
+    }
+    public function update(Request $request, $id)
+    {
+        $coupon = Coupon::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'usage_limit' => 'required|integer|min:1|max:10000',
+            'expiry_date' => 'required|date',
+            'type' => 'required|in:percentage,fixed',
+            'discount' => 'required|numeric|min:1',
+        ]);
+
+        $coupon->update([
+            'name' => $request->name,
+            'code' => $request->code, // ✅ NOW EDITABLE
             'usage_limit' => $request->usage_limit,
             'expiry_date' => $request->expiry_date,
             'type' => $request->type,
             'discount' => $request->discount,
         ]);
 
-        return back()->with('success', 'Coupon created');
-    }
-
-    public function index()
-    {
-         return view('admin.coupon.index');
+        return redirect()->route('coupon.index')->with('success', 'Coupon updated successfully');
     }
 }
